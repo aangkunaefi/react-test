@@ -25,7 +25,9 @@ const Table = () => {
       setTableData(data);
       setLoading(false);
       setDeleting(false);
-      setSortedColumn(null);
+      if(sortedColumn){
+        sortBy(sortedColumn, true);
+      }
     });
   }
 
@@ -56,8 +58,8 @@ const Table = () => {
   }
   
 
-  const sortBy = (column) => () => {
-    setAscendingSort(!ascendingSort);
+  const sortBy = (column, keepSortType = false) => () => {
+    !keepSortType && setAscendingSort(!ascendingSort);
     setSortedColumn(column);
     const result = !isNaN(tableData[0][column])
       ? tableData.sort((a, b) => parseInt(a[column]) - parseInt(b[column])) 
