@@ -25,6 +25,7 @@ const Table = () => {
       setTableData(data);
       setLoading(false);
       setDeleting(false);
+      setSortedColumn(null);
     });
   }
 
