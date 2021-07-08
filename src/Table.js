@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-script-url */
-import { useEffect, useState, React, useCallback } from 'react';
+import { useEffect, useState, React } from 'react';
 import { Table as BootstrapTable, Button } from 'react-bootstrap';
 import { deleteUser, getUsers } from './api';
 import UserForm from './UserForm'
@@ -25,8 +25,9 @@ const Table = () => {
   }
 
   useEffect(() => {
-    getData();
-  });
+    const initData = () => getData();
+    initData();
+  }, []);
 
   const onDelete = (userId) => () => {
     setDeleting(true);
