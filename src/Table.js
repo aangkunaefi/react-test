@@ -20,7 +20,7 @@ const Table = () => {
       setTableData(data);
       setLoading(false);
       setDeleting(false);
-      !!sortedColumn && sortBy(sortedColumn, true)();
+      setSortedColumn(null);
     });
   }
 
@@ -56,13 +56,13 @@ const Table = () => {
   }
   
 
-  const sortBy = (column, keepSortType = false) => () => {
-    !keepSortType && setAscendingSort(!ascendingSort);
+  const sortBy = (column) => () => {
     setSortedColumn(column);
     const result = !isNaN(tableData[0][column])
-      ? tableData.sort((a, b) => parseInt(a[column]) - parseInt(b[column])) 
-      : tableData.sort((a, b) => a[column].localeCompare(b[column]));
-    if(!ascendingSort) result.reverse();
+    ? tableData.sort((a, b) => parseInt(a[column]) - parseInt(b[column])) 
+    : tableData.sort((a, b) => a[column].localeCompare(b[column]));
+    !ascendingSort && result.reverse();
+    setAscendingSort(!ascendingSort);
     setTableData(JSON.parse(JSON.stringify(result)));
   }
 
