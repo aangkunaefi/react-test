@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-script-url */
-import { useEffect, useState, React } from 'react';
+import { useEffect, useState, React, useCallback } from 'react';
 import { Table as BootstrapTable, Button } from 'react-bootstrap';
 import { deleteUser, getUsers } from './api';
 import UserForm from './UserForm'
@@ -15,21 +15,18 @@ const Table = () => {
   const [deleting, setDeleting] = useState(false);
   const [sortedColumn, setSortedColumn] = useState(null);
 
-  useEffect(() => {
-    getData();
-    return () => {};
-  }, []);
-
   const getData = () => {
     getUsers().then(({ data }) => {
       setTableData(data);
       setLoading(false);
       setDeleting(false);
-      if(sortedColumn){
-        sortBy(sortedColumn, true);
-      }
+      !!sortedColumn && sortBy(sortedColumn, true)();
     });
   }
+
+  useEffect(() => {
+    getData();
+  });
 
   const onDelete = (userId) => () => {
     setDeleting(true);
