@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-script-url */
 import { useEffect, useState, React } from 'react';
-import { Table as BootstrapTable, Button, Modal } from 'react-bootstrap';
+import { Table as BootstrapTable, Button } from 'react-bootstrap';
 import { deleteUser, getUsers } from './api';
 import UserForm from './UserForm'
 
