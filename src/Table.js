@@ -11,7 +11,7 @@ const Table = () => {
   const [tableData, setTableData] = useState([]);
   const [ascendingSort, setAscendingSort] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [deleting, setDeleting] = useState(false);
   const [sortedColumn, setSortedColumn] = useState(null);
 
@@ -38,7 +38,7 @@ const Table = () => {
     return <tr key={item.user_id}>
       <td width="60" className="text-center">{index + 1}</td>
       <td>
-        <a onClick={openModal(item.user_id)} className="text-warning" href="">{item.user_name}</a>
+        <a onClick={openModal(item)} className="text-warning" href="">{item.user_name}</a>
       </td>
       <td width="120" className="text-right">{item.score}</td>
       <td className="text-center">{item.registered.match(/\d+-\d+-\d+/g)[0]}</td>
@@ -70,9 +70,9 @@ const Table = () => {
     setShowModal(!showModal);
   }
 
-  const openModal = (userId) => (event) => {
+  const openModal = (userData) => (event) => {
     !!event && typeof event.preventDefault == 'function' && event.preventDefault();
-    setCurrentId(userId);
+    setCurrentUser(userData);
     toggleModal();
   }
 
@@ -105,7 +105,7 @@ const Table = () => {
       visibility={showModal} 
       onRefresh={getData} 
       onClose={toggleModal} 
-      userId={currentId} />
+      user={currentUser} />
   </div>
 
 }

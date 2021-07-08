@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { getUser, saveUser } from './api';
+import { saveUser } from './api';
 
-const UserForm = ({ visibility, onClose, onRefresh, userId }) => {
+const UserForm = ({ visibility, onClose, onRefresh, user }) => {
   
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,12 +18,12 @@ const UserForm = ({ visibility, onClose, onRefresh, userId }) => {
 
   const onSubmit = async () => {
     const postData = {
-      user_id: userId,
+      user_id: user.user_id,
       user_name: userName,
       email,
       score
     }
-    if(!userId) postData.registered = new Date();
+    if(!user) postData.registered = new Date();
     setLoading(true);
     const { status } = await saveUser(postData);
     if([200, 201].indexOf(status) >= 0){
@@ -35,21 +35,16 @@ const UserForm = ({ visibility, onClose, onRefresh, userId }) => {
 
   useEffect(() => {
     if(visibility){
-      setUserName('');
-      setEmail('');
-      setScore('');
-      !!userId && getUser(userId).then(({ data }) => {
-        setUserName(data.user_name);
-        setEmail(data.email);
-        setScore(data.score);
-      });
+      setUserName(user ? user.user_name : '');
+      setEmail(user ? user.email : '');
+      setScore(user ? user.score : '');
     }
-  }, [visibility, userId]);
+  }, [visibility, user]);
 
   return <Modal show={visibility} onHide={onClose}>
     <Form>
       <Modal.Header closeButton>
-        <Modal.Title>{userId ? 'Update User' : 'Add User'}</Modal.Title>
+        <Modal.Title>{!!user ? 'Update User' : 'Add User'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Group>
