@@ -18,7 +18,7 @@ const UserForm = ({ visibility, onClose, onRefresh, user }) => {
 
   const onSubmit = async () => {
     const postData = {
-      user_id: user.user_id,
+      user_id: user ? user.user_id : null,
       user_name: userName,
       email,
       score
