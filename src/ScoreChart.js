@@ -10,7 +10,7 @@ const BarChart = styled(Chart)`
 const ScoreChart = ({ visibility, onClose, userData }) => {
 
   const handlerTest = ({ value, name }) => {
-    alert(value == 1 ? `${value} person gets ${name}` : `${value} people get ${name}`)
+    alert(value === 1 ? `${value} person gets ${name}` : `${value} people get ${name}`)
   }
 
   const chartOption = () => {
