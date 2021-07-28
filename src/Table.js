@@ -4,13 +4,15 @@ import { useEffect, useState, React } from 'react';
 import { Table as BootstrapTable, Button } from 'react-bootstrap';
 import { deleteUser, getUsers } from './api';
 import UserForm from './UserForm'
+import ScoreChart from './ScoreChart'
 
 const Table = () => {
 
   const [loading, setLoading] = useState(true);
   const [tableData, setTableData] = useState([]);
   const [ascendingSort, setAscendingSort] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [showScoreChartModal, setShowScoreChartModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [deleting, setDeleting] = useState(false);
   const [sortedColumn, setSortedColumn] = useState(null);
@@ -38,7 +40,7 @@ const Table = () => {
     return <tr key={item.user_id}>
       <td width="60" className="text-center">{index + 1}</td>
       <td>
-        <a onClick={openModal(item)} className="text-warning" href="">{item.user_name}</a>
+        <a onClick={openUserModal(item)} className="text-warning" href="">{item.user_name}</a>
       </td>
       <td width="120" className="text-right">{item.score}</td>
       <td className="text-center">{item.registered.match(/\d+-\d+-\d+/g)[0]}</td>
@@ -66,20 +68,23 @@ const Table = () => {
     setTableData(JSON.parse(JSON.stringify(result)));
   }
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
+  const toggleUserModal = () => {
+    setShowUserModal(!showUserModal);
   }
 
-  const openModal = (userData) => (event) => {
+  const openUserModal = (userData) => (event) => {
     !!event && typeof event.preventDefault == 'function' && event.preventDefault();
     setCurrentUser(userData);
-    toggleModal();
+    toggleUserModal();
   }
 
   return <div>
     <div className="d-flex mb-4 justify-content-between">
       <h1 className="h3 font-weight-bold m-0">User Data</h1>
-      <Button variant="primary" onClick={openModal(null)}>+ New User</Button>
+      <div>
+        <Button variant="warning" className="mr-3" onClick={() => setShowScoreChartModal(true)}>Score Chart</Button>
+        <Button variant="primary" onClick={openUserModal(null)}>+ New User</Button>
+      </div>
     </div>
     <BootstrapTable striped responsive bordered hover variant="dark">
       <thead>
@@ -102,10 +107,15 @@ const Table = () => {
       </tbody>
     </BootstrapTable>
     <UserForm 
-      visibility={showModal} 
+      visibility={showUserModal} 
       onRefresh={getData} 
-      onClose={toggleModal} 
+      onClose={toggleUserModal} 
       user={currentUser} />
+    <ScoreChart 
+      onClose={() => setShowScoreChartModal(false)}
+      userData={tableData}
+      visibility={showScoreChartModal} 
+      />
   </div>
 
 }
